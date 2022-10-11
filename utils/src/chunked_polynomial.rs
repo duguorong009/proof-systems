@@ -5,6 +5,8 @@
 use ark_ff::Field;
 use ark_poly::polynomial::{univariate::DensePolynomial, Polynomial};
 
+use crate::ChunkedEvaluations;
+
 /// This struct contains multiple chunk polynomials with degree `size-1`.
 pub struct ChunkedPolynomial<F: Field> {
     /// The chunk polynomials.
@@ -16,11 +18,11 @@ pub struct ChunkedPolynomial<F: Field> {
 
 impl<F: Field> ChunkedPolynomial<F> {
     /// This function evaluates polynomial in chunks.
-    pub fn evaluate_chunks(&self, elm: F) -> Vec<F> {
-        let mut res: Vec<F> = vec![];
+    pub fn evaluate_chunks(&self, elm: F) -> ChunkedEvaluations<F> {
+        let mut res: ChunkedEvaluations<F> = ChunkedEvaluations { chunks: vec![] };
         for poly in &self.polys {
             let eval = poly.evaluate(&elm);
-            res.push(eval);
+            res.chunks.push(eval);
         }
         res
     }

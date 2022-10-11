@@ -950,10 +950,12 @@ mod tests {
         let poly1_chunked_evals = vec![
             poly1
                 .to_chunked_polynomial(srs.g.len())
-                .evaluate_chunks(elm[0]),
+                .evaluate_chunks(elm[0])
+                .chunks,
             poly1
                 .to_chunked_polynomial(srs.g.len())
-                .evaluate_chunks(elm[1]),
+                .evaluate_chunks(elm[1])
+                .chunks,
         ];
 
         fn sum(c: &[Fp]) -> Fp {
@@ -966,10 +968,12 @@ mod tests {
         let poly2_chunked_evals = vec![
             poly2
                 .to_chunked_polynomial(srs.g.len())
-                .evaluate_chunks(elm[0]),
+                .evaluate_chunks(elm[0])
+                .chunks,
             poly2
                 .to_chunked_polynomial(srs.g.len())
-                .evaluate_chunks(elm[1]),
+                .evaluate_chunks(elm[1])
+                .chunks,
         ];
 
         assert_eq!(sum(&poly2_chunked_evals[0]), poly2.evaluate(&elm[0]));

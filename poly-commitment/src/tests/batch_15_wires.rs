@@ -80,7 +80,7 @@ where
                     (
                         srs.commit(&a[i].clone(), bounds[i], rng),
                         x.iter()
-                            .map(|xx| a[i].to_chunked_polynomial(size).evaluate_chunks(*xx))
+                            .map(|xx| a[i].to_chunked_polynomial(size).evaluate_chunks(*xx).chunks)
                             .collect::<Vec<_>>(),
                         bounds[i],
                     )

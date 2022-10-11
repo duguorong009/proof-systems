@@ -2,14 +2,14 @@
 
 use crate::circuits::wires::{COLUMNS, PERMUTS};
 use ark_ec::AffineCurve;
-use ark_ff::{FftField, One, Zero};
+use ark_ff::{FftField, Field, One, Zero};
 use ark_poly::univariate::DensePolynomial;
 use commitment_dlog::{
     commitment::{b_poly, b_poly_coefficients, PolyComm},
     evaluation_proof::OpeningProof,
 };
-use o1_utils::ExtendedDensePolynomial;
-use serde::{Deserialize, Serialize};
+use o1_utils::{ChunkedEvaluations, ExtendedDensePolynomial};
+use serde::{de::DeserializeOwned, Deserialize, Serialize};
 use serde_with::serde_as;
 use std::array;
 
@@ -17,25 +17,25 @@ use std::array;
 /// Evaluations of lookup polynomials
 #[serde_as]
 #[derive(Clone, Serialize, Deserialize)]
-#[serde(bound(
-    serialize = "Vec<o1_utils::serialization::SerdeAs>: serde_with::SerializeAs<Field>",
-    deserialize = "Vec<o1_utils::serialization::SerdeAs>: serde_with::DeserializeAs<'de, Field>"
-))]
-pub struct LookupEvaluations<Field> {
+#[serde(bound = "ChunkedEvaluations<F>: Serialize + DeserializeOwned")]
+pub struct LookupEvaluations<F>
+where
+    F: Field,
+{
     /// sorted lookup table polynomial
-    #[serde_as(as = "Vec<Vec<o1_utils::serialization::SerdeAs>>")]
-    pub sorted: Vec<Field>,
-    /// lookup aggregation polynomial
     #[serde_as(as = "Vec<o1_utils::serialization::SerdeAs>")]
-    pub aggreg: Field,
+    pub sorted: Vec<ChunkedEvaluations<F>>,
+    /// lookup aggregation polynomial
+    #[serde_as(as = "o1_utils::serialization::SerdeAs")]
+    pub aggreg: ChunkedEvaluations<F>,
     // TODO: May be possible to optimize this away?
     /// lookup table polynomial
-    #[serde_as(as = "Vec<o1_utils::serialization::SerdeAs>")]
-    pub table: Field,
+    #[serde_as(as = "o1_utils::serialization::SerdeAs")]
+    pub table: ChunkedEvaluations<F>,
 
     /// Optionally, a runtime table polynomial.
-    #[serde_as(as = "Option<Vec<o1_utils::serialization::SerdeAs>>")]
-    pub runtime: Option<Field>,
+    #[serde_as(as = "Option<o1_utils::serialization::SerdeAs>")]
+    pub runtime: Option<ChunkedEvaluations<F>>,
 }
 
 // TODO: this should really be vectors here, perhaps create another type for chunked evaluations?
@@ -44,32 +44,32 @@ pub struct LookupEvaluations<Field> {
 /// - **Non chunked evaluations** `Field` is instantiated with a field, so they are single-sized#[serde_as]
 #[serde_as]
 #[derive(Clone, Serialize, Deserialize)]
-#[serde(bound(
-    serialize = "Vec<o1_utils::serialization::SerdeAs>: serde_with::SerializeAs<Field>",
-    deserialize = "Vec<o1_utils::serialization::SerdeAs>: serde_with::DeserializeAs<'de, Field>"
-))]
-pub struct ProofEvaluations<Field> {
+#[serde(bound = "ChunkedEvaluations<F>: Serialize + DeserializeOwned")]
+pub struct ProofEvaluations<F>
+where
+    F: Field,
+{
     /// witness polynomials
-    #[serde_as(as = "[Vec<o1_utils::serialization::SerdeAs>; COLUMNS]")]
-    pub w: [Field; COLUMNS],
+    #[serde_as(as = "[o1_utils::serialization::SerdeAs; COLUMNS]")]
+    pub w: [ChunkedEvaluations<F>; COLUMNS],
     /// permutation polynomial
-    #[serde_as(as = "Vec<o1_utils::serialization::SerdeAs>")]
-    pub z: Field,
+    #[serde_as(as = "o1_utils::serialization::SerdeAs")]
+    pub z: ChunkedEvaluations<F>,
     /// permutation polynomials
     /// (PERMUTS-1 evaluations because the last permutation is only used in commitment form)
-    #[serde_as(as = "[Vec<o1_utils::serialization::SerdeAs>; PERMUTS - 1]")]
-    pub s: [Field; PERMUTS - 1],
+    #[serde_as(as = "[o1_utils::serialization::SerdeAs; PERMUTS - 1]")]
+    pub s: [ChunkedEvaluations<F>; PERMUTS - 1],
     /// coefficient polynomials
-    #[serde_as(as = "[Vec<o1_utils::serialization::SerdeAs>; COLUMNS]")]
-    pub coefficients: [Field; COLUMNS],
+    #[serde_as(as = "[o1_utils::serialization::SerdeAs; COLUMNS]")]
+    pub coefficients: [ChunkedEvaluations<F>; COLUMNS],
     /// lookup-related evaluations
-    pub lookup: Option<LookupEvaluations<Field>>,
+    pub lookup: Option<LookupEvaluations<F>>,
     /// evaluation of the generic selector polynomial
-    #[serde_as(as = "Vec<o1_utils::serialization::SerdeAs>")]
-    pub generic_selector: Field,
+    #[serde_as(as = "o1_utils::serialization::SerdeAs")]
+    pub generic_selector: ChunkedEvaluations<F>,
     /// evaluation of the poseidon selector polynomial
-    #[serde_as(as = "Vec<o1_utils::serialization::SerdeAs>")]
-    pub poseidon_selector: Field,
+    #[serde_as(as = "o1_utils::serialization::SerdeAs")]
+    pub poseidon_selector: ChunkedEvaluations<F>,
 }
 
 /// Commitments linked to the lookup feature
@@ -113,7 +113,7 @@ pub struct ProverProof<G: AffineCurve> {
 
     /// Two evaluations over a number of committed polynomials
     // TODO(mimoo): that really should be a type Evals { z: PE, zw: PE }
-    pub evals: [ProofEvaluations<Vec<G::ScalarField>>; 2],
+    pub evals: [ProofEvaluations<G::ScalarField>; 2],
 
     /// Required evaluation for [Maller's optimization](https://o1-labs.github.io/mina-book/crypto/plonk/maller_15.html#the-evaluation-of-l)
     #[serde_as(as = "o1_utils::serialization::SerdeAs")]
@@ -144,15 +144,16 @@ where
 
 //~ spec:endcode
 
-impl<F> ProofEvaluations<F> {
+impl<F> ProofEvaluations<F>
+where
+    F: Field,
+{
     /// Transpose the `ProofEvaluations`.
     ///
     /// # Panics
     ///
     /// Will panic if `ProofEvaluation` is None.
-    pub fn transpose<const N: usize>(
-        evals: [&ProofEvaluations<F>; N],
-    ) -> ProofEvaluations<[&F; N]> {
+    pub fn transpose<const N: usize>(evals: [&ProofEvaluations<F>; N]) -> ProofEvaluations<F> {
         let has_lookup = evals.iter().all(|e| e.lookup.is_some());
         let has_runtime = has_lookup
             && evals
@@ -236,7 +237,10 @@ impl<G: AffineCurve> RecursionChallenge<G> {
     }
 }
 
-impl<F: Zero> ProofEvaluations<F> {
+impl<F> ProofEvaluations<F>
+where
+    F: Zero,
+{
     pub fn dummy_with_witness_evaluations(w: [F; COLUMNS]) -> ProofEvaluations<F> {
         ProofEvaluations {
             w,
@@ -250,7 +254,10 @@ impl<F: Zero> ProofEvaluations<F> {
     }
 }
 
-impl<F: FftField> ProofEvaluations<Vec<F>> {
+impl<F> ProofEvaluations<F>
+where
+    F: FftField,
+{
     pub fn combine(&self, pt: F) -> ProofEvaluations<F> {
         ProofEvaluations::<F> {
             s: array::from_fn(|i| DensePolynomial::eval_polynomial(&self.s[i], pt)),

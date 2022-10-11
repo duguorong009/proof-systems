@@ -101,8 +101,8 @@ where
     aggreg8: Option<Evaluations<F, D<F>>>,
 
     /// The evaluations of the aggregation polynomial for the proof
-    eval_zeta: Option<LookupEvaluations<Vec<F>>>,
-    eval_zeta_omega: Option<LookupEvaluations<Vec<F>>>,
+    eval_zeta: Option<LookupEvaluations<F>>,
+    eval_zeta_omega: Option<LookupEvaluations<F>>,
 
     /// Runtime table
     runtime_table: Option<DensePolynomial<F>>,

@@ -142,7 +142,8 @@ fn test_randomised<RNG: Rng + CryptoRng>(mut rng: &mut RNG) {
             for point in eval_points.clone() {
                 chunked_evals.push(
                     poly.to_chunked_polynomial(srs.g.len())
-                        .evaluate_chunks(point),
+                        .evaluate_chunks(point)
+                        .chunks,
                 );
             }
 
