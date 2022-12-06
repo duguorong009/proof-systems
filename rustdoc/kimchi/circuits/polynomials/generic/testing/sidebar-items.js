@@ -1,0 +1,1 @@
+window.SIDEBAR_ITEMS = {"fn":[["create_circuit","Create a generic circuit"],["fill_in_witness","Fill in a witness created via [`create_circuit`]"]]};
