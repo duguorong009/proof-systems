@@ -943,14 +943,14 @@
     </span><span class="kw">fn </span>test_from_biguint() {
         <span class="kw">let </span>one = ForeignElement::&lt;BaseField, <span class="number">3</span>&gt;::from_be(<span class="kw-2">&amp;</span>[<span class="number">0x01</span>]);
         <span class="macro">assert_eq!</span>(
-            BaseField::from_biguint(one.to_biguint()).unwrap(),
+            BaseField::from_biguint(<span class="kw-2">&amp;</span>one.to_biguint()).unwrap(),
             BaseField::one()
         );
 
         <span class="kw">let </span>max_big = BaseField::modulus_biguint() - <span class="number">1u32</span>;
         <span class="kw">let </span>max_fe = ForeignElement::&lt;BaseField, <span class="number">3</span>&gt;::from_biguint(max_big.clone());
         <span class="macro">assert_eq!</span>(
-            BaseField::from_biguint(max_fe.to_biguint()).unwrap(),
+            BaseField::from_biguint(<span class="kw-2">&amp;</span>max_fe.to_biguint()).unwrap(),
             BaseField::from_bytes(<span class="kw-2">&amp;</span>max_big.to_bytes_le()).unwrap(),
         );
     }
