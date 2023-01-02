@@ -1,4 +1,4 @@
-<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `kimchi/src/circuits/polynomials/foreign_field_add/gadget.rs`."><meta name="keywords" content="rust, rustlang, rust-lang"><title>gadget.rs - source</title><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../../../static.files/SourceSerif4-Regular-1f7d512b176f0f72.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../../../static.files/FiraSans-Regular-018c141bf0843ffd.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../../../static.files/FiraSans-Medium-8f9a781e4970d388.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../../../static.files/SourceCodePro-Regular-562dcc5011b6de7d.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../../../static.files/SourceSerif4-Bold-124a1ca42af929b6.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../../../static.files/SourceCodePro-Semibold-d899c5a5c4aeb14a.ttf.woff2"><link rel="stylesheet" href="../../../../../static.files/normalize-76eba96aa4d2e634.css"><link rel="stylesheet" href="../../../../../static.files/rustdoc-64f7dca12162a801.css" id="mainThemeStyle"><link rel="stylesheet" id="themeStyle" href="../../../../../static.files/light-ebce58d0a40c3431.css"><link rel="stylesheet" disabled href="../../../../../static.files/dark-f23faae4a2daf9a6.css"><link rel="stylesheet" disabled href="../../../../../static.files/ayu-94f39d4346842c1e.css"><script id="default-settings" ></script><script src="../../../../../static.files/storage-d43fa987303ecbbb.js"></script><script defer src="../../../../../static.files/source-script-5cf2e01a42cc9858.js"></script><script defer src="../../../../../source-files.js"></script><script defer src="../../../../../static.files/main-a211dbb005fb8161.js"></script><noscript><link rel="stylesheet" href="../../../../../static.files/noscript-13285aec31fa243e.css"></noscript><link rel="alternate icon" type="image/png" href="../../../../../static.files/favicon-16x16-8b506e7a72182f1c.png"><link rel="alternate icon" type="image/png" href="../../../../../static.files/favicon-32x32-422f7d1d52889060.png"><link rel="icon" type="image/svg+xml" href="../../../../../static.files/favicon-2c020d218678b618.svg"></head><body class="rustdoc source"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]--><nav class="sidebar"></nav><main><div class="width-limiter"><nav class="sub"><a class="sub-logo-container" href="../../../../../kimchi/index.html"><img class="rust-logo" src="../../../../../static.files/rust-logo-151179464ae7ed46.svg" alt="logo"></a><form class="search-form"><span></span><input class="search-input" name="search" aria-label="Run search in the documentation" autocomplete="off" spellcheck="false" placeholder="Click or press ‘S’ to search, ‘?’ for more options…" type="search"><div id="help-button" title="help" tabindex="-1"><a href="../../../../../help.html">?</a></div><div id="settings-menu" tabindex="-1"><a href="../../../../../settings.html" title="settings"><img width="22" height="22" alt="Change settings" src="../../../../../static.files/wheel-5ec35bf9ca753509.svg"></a></div></form></nav><section id="main-content" class="content"><div class="example-wrap"><pre class="src-line-numbers"><a href="#1" id="1">1</a>
+<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `kimchi/src/circuits/polynomials/foreign_field_add/gadget.rs`."><meta name="keywords" content="rust, rustlang, rust-lang"><title>gadget.rs - source</title><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../../../static.files/SourceSerif4-Regular-1f7d512b176f0f72.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../../../static.files/FiraSans-Regular-018c141bf0843ffd.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../../../static.files/FiraSans-Medium-8f9a781e4970d388.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../../../static.files/SourceCodePro-Regular-562dcc5011b6de7d.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../../../static.files/SourceSerif4-Bold-124a1ca42af929b6.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../../../static.files/SourceCodePro-Semibold-d899c5a5c4aeb14a.ttf.woff2"><link rel="stylesheet" href="../../../../../static.files/normalize-76eba96aa4d2e634.css"><link rel="stylesheet" href="../../../../../static.files/rustdoc-34efc64c5083af8d.css" id="mainThemeStyle"><link rel="stylesheet" id="themeStyle" href="../../../../../static.files/light-4743e13df3dfe8c4.css"><link rel="stylesheet" disabled href="../../../../../static.files/dark-0e1b889528bd466b.css"><link rel="stylesheet" disabled href="../../../../../static.files/ayu-65289d5d067c7c66.css"><script id="default-settings" ></script><script src="../../../../../static.files/storage-d43fa987303ecbbb.js"></script><script defer src="../../../../../static.files/source-script-ea63cb6500f71309.js"></script><script defer src="../../../../../source-files.js"></script><script defer src="../../../../../static.files/main-4a084badb5778746.js"></script><noscript><link rel="stylesheet" href="../../../../../static.files/noscript-13285aec31fa243e.css"></noscript><link rel="alternate icon" type="image/png" href="../../../../../static.files/favicon-16x16-8b506e7a72182f1c.png"><link rel="alternate icon" type="image/png" href="../../../../../static.files/favicon-32x32-422f7d1d52889060.png"><link rel="icon" type="image/svg+xml" href="../../../../../static.files/favicon-2c020d218678b618.svg"></head><body class="rustdoc source"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]--><nav class="sidebar"></nav><main><nav class="sub"><a class="sub-logo-container" href="../../../../../kimchi/index.html"><img class="rust-logo" src="../../../../../static.files/rust-logo-151179464ae7ed46.svg" alt="logo"></a><form class="search-form"><span></span><input class="search-input" name="search" aria-label="Run search in the documentation" autocomplete="off" spellcheck="false" placeholder="Click or press ‘S’ to search, ‘?’ for more options…" type="search"><div id="help-button" title="help" tabindex="-1"><a href="../../../../../help.html">?</a></div><div id="settings-menu" tabindex="-1"><a href="../../../../../settings.html" title="settings"><img width="22" height="22" alt="Change settings" src="../../../../../static.files/wheel-5ec35bf9ca753509.svg"></a></div></form></nav><section id="main-content" class="content"><div class="example-wrap"><pre class="src-line-numbers"><a href="#1" id="1">1</a>
 <a href="#2" id="2">2</a>
 <a href="#3" id="3">3</a>
 <a href="#4" id="4">4</a>
@@ -100,6 +100,46 @@
 <a href="#100" id="100">100</a>
 <a href="#101" id="101">101</a>
 <a href="#102" id="102">102</a>
+<a href="#103" id="103">103</a>
+<a href="#104" id="104">104</a>
+<a href="#105" id="105">105</a>
+<a href="#106" id="106">106</a>
+<a href="#107" id="107">107</a>
+<a href="#108" id="108">108</a>
+<a href="#109" id="109">109</a>
+<a href="#110" id="110">110</a>
+<a href="#111" id="111">111</a>
+<a href="#112" id="112">112</a>
+<a href="#113" id="113">113</a>
+<a href="#114" id="114">114</a>
+<a href="#115" id="115">115</a>
+<a href="#116" id="116">116</a>
+<a href="#117" id="117">117</a>
+<a href="#118" id="118">118</a>
+<a href="#119" id="119">119</a>
+<a href="#120" id="120">120</a>
+<a href="#121" id="121">121</a>
+<a href="#122" id="122">122</a>
+<a href="#123" id="123">123</a>
+<a href="#124" id="124">124</a>
+<a href="#125" id="125">125</a>
+<a href="#126" id="126">126</a>
+<a href="#127" id="127">127</a>
+<a href="#128" id="128">128</a>
+<a href="#129" id="129">129</a>
+<a href="#130" id="130">130</a>
+<a href="#131" id="131">131</a>
+<a href="#132" id="132">132</a>
+<a href="#133" id="133">133</a>
+<a href="#134" id="134">134</a>
+<a href="#135" id="135">135</a>
+<a href="#136" id="136">136</a>
+<a href="#137" id="137">137</a>
+<a href="#138" id="138">138</a>
+<a href="#139" id="139">139</a>
+<a href="#140" id="140">140</a>
+<a href="#141" id="141">141</a>
+<a href="#142" id="142">142</a>
 </pre><pre class="rust"><code><span class="doccomment">//! This module obtains the gates of a foreign field addition circuit.
 
 </span><span class="kw">use </span>ark_ff::{PrimeField, SquareRootField};
@@ -107,18 +147,21 @@
 <span class="kw">use </span>o1_utils::foreign_field::BigUintForeignFieldHelpers;
 
 <span class="kw">use </span><span class="kw">crate</span>::circuits::{
-    gate::{CircuitGate, GateType},
+    gate::{CircuitGate, Connect, GateType},
     wires::Wire,
 };
 
+<span class="kw">use </span><span class="kw">super</span>::witness::FFOps;
+
 <span class="kw">impl</span>&lt;F: PrimeField + SquareRootField&gt; CircuitGate&lt;F&gt; {
     <span class="doccomment">/// Create foreign field addition gate chain without range checks (needs to wire the range check for result bound manually)
-    ///     Inputs
-    ///         starting row
-    ///         number of addition gates
-    ///     Outputs tuple (next_row, circuit_gates) where
-    ///       next_row      - next row after this gate
-    ///       circuit_gates - vector of circuit gates comprising this gate
+    /// - Inputs
+    ///   - starting row
+    ///   - operations to perform
+    ///   - modulus of the foreign field
+    /// - Outputs tuple (next_row, circuit_gates) where
+    ///   - next_row      - next row after this gate
+    ///   - circuit_gates - vector of circuit gates comprising this gate
     ///
     /// Note that te final structure of the circuit is as follows:
     /// circuit_gates = [
@@ -129,31 +172,39 @@
     ///      [n+1]         -&gt; 1 Zero row for bound result
     /// ]
     ///
-    </span><span class="kw">pub fn </span>create(
+    /// INTEGRATION:
+    /// - Wire the range check for result bound manually
+    /// - Connect to public input containing the 1 value for the overflow in the final bound check
+    </span><span class="kw">pub fn </span>create_chain_ffadd(
         start_row: usize,
-        num: usize,
+        opcodes: <span class="kw-2">&amp;</span>[FFOps],
         foreign_field_modulus: <span class="kw-2">&amp;</span>BigUint,
     ) -&gt; (usize, Vec&lt;<span class="self">Self</span>&gt;) {
         <span class="kw">let </span>next_row = start_row;
         <span class="kw">let </span>foreign_field_modulus = foreign_field_modulus.to_field_limbs::&lt;F&gt;();
         <span class="kw">let </span><span class="kw-2">mut </span>circuit_gates = <span class="macro">vec!</span>[];
-
-        <span class="comment">// Foreign field addition gates
+        <span class="kw">let </span>num = opcodes.len();
+        <span class="comment">// ---------------------------
+        // Foreign field addition gates
         // ---------------------------
         // First the single-addition gates
-        </span><span class="kw">for </span>i <span class="kw">in </span><span class="number">0</span>..num {
+        </span><span class="kw">for </span>(i, opcode) <span class="kw">in </span>opcodes.iter().enumerate() {
+            <span class="kw">let </span><span class="kw-2">mut </span>coeffs = foreign_field_modulus.to_vec();
+            coeffs.push(opcode.sign::&lt;F&gt;());
             circuit_gates.append(<span class="kw-2">&amp;mut </span><span class="macro">vec!</span>[CircuitGate {
                 typ: GateType::ForeignFieldAdd,
                 wires: Wire::for_row(next_row + i),
-                coeffs: foreign_field_modulus.to_vec(),
+                coeffs,
             }]);
         }
+        <span class="kw">let </span><span class="kw-2">mut </span>final_coeffs = foreign_field_modulus.to_vec();
+        final_coeffs.push(FFOps::Add.sign::&lt;F&gt;());
         <span class="comment">// Then the final bound gate and the zero gate
         </span>circuit_gates.append(<span class="kw-2">&amp;mut </span><span class="macro">vec!</span>[
             CircuitGate {
                 typ: GateType::ForeignFieldAdd,
                 wires: Wire::for_row(next_row + num),
-                coeffs: foreign_field_modulus.to_vec(),
+                coeffs: final_coeffs,
             },
             CircuitGate {
                 typ: GateType::Zero,
@@ -164,22 +215,27 @@
         (start_row + circuit_gates.len(), circuit_gates)
     }
 
-    <span class="doccomment">/// Create a single foreign field addition gate
-    ///     Inputs
-    ///         starting row
-    ///     Outputs tuple (next_row, circuit_gates) where
-    ///       next_row      - next row after this gate
-    ///       circuit_gates - vector of circuit gates comprising this gate
+    <span class="doccomment">/// Create a single foreign field addition gate. This is used for example in the final bound check.
+    /// - Inputs
+    ///   - starting row
+    ///   - operation to perform
+    ///   - modulus of the foreign field
+    /// - Outputs tuple (next_row, circuit_gates) where
+    ///   - next_row      - next row after this gate
+    ///   - circuit_gates - vector of circuit gates comprising this gate
     </span><span class="kw">pub fn </span>create_single_ffadd(
         start_row: usize,
+        operation: FFOps,
         foreign_field_modulus: <span class="kw-2">&amp;</span>BigUint,
     ) -&gt; (usize, Vec&lt;<span class="self">Self</span>&gt;) {
         <span class="kw">let </span>foreign_field_modulus = foreign_field_modulus.to_field_limbs::&lt;F&gt;();
+        <span class="kw">let </span><span class="kw-2">mut </span>coeffs = foreign_field_modulus.to_vec();
+        coeffs.push(operation.sign::&lt;F&gt;());
         <span class="kw">let </span>circuit_gates = <span class="macro">vec!</span>[
             CircuitGate {
                 typ: GateType::ForeignFieldAdd,
                 wires: Wire::for_row(start_row),
-                coeffs: foreign_field_modulus.to_vec(),
+                coeffs,
             },
             CircuitGate {
                 typ: GateType::Zero,
@@ -191,16 +247,40 @@
         (start_row + circuit_gates.len(), circuit_gates)
     }
 
-    <span class="doccomment">/// Create foreign field addition gate by extending the existing gates
-    </span><span class="kw">pub fn </span>extend_single_foreign_field_add(
+    <span class="doccomment">/// Extend a chain of foreign field addition gates. It already wires the public input to the overflow cell.
+    /// - Inputs
+    ///   - gates: vector of gates to extend
+    ///   - pub_row: row of the public input
+    ///   - curr_row: mutable reference to the current row
+    ///   - opcodes: operations to perform
+    ///   - foreign_field_modulus: modulus of the foreign field
+    </span><span class="kw">pub fn </span>extend_chain_ffadd(
         gates: <span class="kw-2">&amp;mut </span>Vec&lt;<span class="self">Self</span>&gt;,
+        pub_row: usize,
         curr_row: <span class="kw-2">&amp;mut </span>usize,
+        opcodes: <span class="kw-2">&amp;</span>[FFOps],
         foreign_field_modulus: <span class="kw-2">&amp;</span>BigUint,
     ) {
-        <span class="kw">let </span>(next_row, circuit_gates) = <span class="self">Self</span>::create_single_ffadd(<span class="kw-2">*</span>curr_row, foreign_field_modulus);
+        <span class="kw">let </span>(next_row, add_gates) =
+            <span class="self">Self</span>::create_chain_ffadd(<span class="kw-2">*</span>curr_row, opcodes, foreign_field_modulus);
+        gates.extend_from_slice(<span class="kw-2">&amp;</span>add_gates);
         <span class="kw-2">*</span>curr_row = next_row;
-        gates.extend_from_slice(<span class="kw-2">&amp;</span>circuit_gates);
+        <span class="comment">// check overflow flag is one
+        </span>gates.connect_cell_pair((pub_row, <span class="number">0</span>), (<span class="kw-2">*</span>curr_row - <span class="number">2</span>, <span class="number">6</span>));
+    }
+
+    <span class="doccomment">/// Extend a single foreign field addition gate followed by a zero row containing the result
+    </span><span class="kw">pub fn </span>extend_single_ffadd(
+        gates: <span class="kw-2">&amp;mut </span>Vec&lt;<span class="self">Self</span>&gt;,
+        curr_row: <span class="kw-2">&amp;mut </span>usize,
+        operation: FFOps,
+        foreign_field_modulus: <span class="kw-2">&amp;</span>BigUint,
+    ) {
+        <span class="kw">let </span>(next_row, add_gates) =
+            <span class="self">Self</span>::create_single_ffadd(<span class="kw-2">*</span>curr_row, operation, foreign_field_modulus);
+        <span class="kw-2">*</span>curr_row = next_row;
+        gates.extend_from_slice(<span class="kw-2">&amp;</span>add_gates);
     }
 }
 </code></pre></div>
-</section></div></main><div id="rustdoc-vars" data-root-path="../../../../../" data-static-root-path="../../../../../static.files/" data-current-crate="kimchi" data-themes="" data-resource-suffix="" data-rustdoc-version="1.68.0-nightly (0f529f0f4 2022-12-13)" data-search-js="search-444266647c4dba98.js" data-settings-js="settings-bebeae96e00e4617.js" data-settings-css="settings-af96d9e2fc13e081.css" ></div></body></html>
+</section></main><div id="rustdoc-vars" data-root-path="../../../../../" data-static-root-path="../../../../../static.files/" data-current-crate="kimchi" data-themes="" data-resource-suffix="" data-rustdoc-version="1.68.0-nightly (77429957a 2023-01-01)" data-search-js="search-181581080540673f.js" data-settings-js="settings-bebeae96e00e4617.js" data-settings-css="settings-58836c674e2f7bd2.css" ></div></body></html>

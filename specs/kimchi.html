@@ -1008,9 +1008,18 @@ This equation is translated as the constraint:</p>
 <code>0 = n' - (b4 + 2 * (b3 + 2 * (b2 + 2 * (b1 + 2 * (b0 + 2*n)))))</code></li>
 </ul>
 <h4 id="range-check"><a class="header" href="#range-check">Range Check</a></h4>
-<p>The range check gadget is comprised of three circuit gates (<code>RangeCheck0</code>, <code>RangeCheck1</code>
-and <code>Zero</code>) and can perform range checks on three values of up to 88 bits: <span class="katex"><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.625em;vertical-align:-0.1944em;"></span><span class="mord"><span class="mord mathnormal" style="margin-right:0.03588em;">v</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.3011em;"><span style="top:-2.55em;margin-left:-0.0359em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight">0</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.15em;"><span></span></span></span></span></span></span><span class="mpunct">,</span><span class="mspace" style="margin-right:0.1667em;"></span><span class="mord"><span class="mord mathnormal" style="margin-right:0.03588em;">v</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.3011em;"><span style="top:-2.55em;margin-left:-0.0359em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight">1</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.15em;"><span></span></span></span></span></span></span></span></span></span> and <span class="katex"><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.5806em;vertical-align:-0.15em;"></span><span class="mord"><span class="mord mathnormal" style="margin-right:0.03588em;">v</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.3011em;"><span style="top:-2.55em;margin-left:-0.0359em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight">2</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.15em;"><span></span></span></span></span></span></span></span></span></span>.</p>
-<p>Optionally, <code>RangeCheck0</code> can be used on its own to perform 64-bit range checks by
+<p>The multi range check gadget is comprised of three circuit gates (<code>RangeCheck0</code>,
+<code>RangeCheck1</code> and <code>Zero</code>) and can perform range checks on three values (<span class="katex"><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.625em;vertical-align:-0.1944em;"></span><span class="mord"><span class="mord mathnormal" style="margin-right:0.03588em;">v</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.3011em;"><span style="top:-2.55em;margin-left:-0.0359em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight">0</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.15em;"><span></span></span></span></span></span></span><span class="mpunct">,</span><span class="mspace" style="margin-right:0.1667em;"></span><span class="mord"><span class="mord mathnormal" style="margin-right:0.03588em;">v</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.3011em;"><span style="top:-2.55em;margin-left:-0.0359em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight">1</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.15em;"><span></span></span></span></span></span></span></span></span></span> and <span class="katex"><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.5806em;vertical-align:-0.15em;"></span><span class="mord"><span class="mord mathnormal" style="margin-right:0.03588em;">v</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.3011em;"><span style="top:-2.55em;margin-left:-0.0359em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight">2</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.15em;"><span></span></span></span></span></span></span></span></span></span>) of up to 88 bits each.</p>
+<p>Values can be copied as inputs to the multi range check gadget in two ways.</p>
+<ul>
+<li>[Standard mode] With 3 copies, by copying <span class="katex"><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.625em;vertical-align:-0.1944em;"></span><span class="mord"><span class="mord mathnormal" style="margin-right:0.03588em;">v</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.3011em;"><span style="top:-2.55em;margin-left:-0.0359em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight">0</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.15em;"><span></span></span></span></span></span></span><span class="mpunct">,</span><span class="mspace" style="margin-right:0.1667em;"></span><span class="mord"><span class="mord mathnormal" style="margin-right:0.03588em;">v</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.3011em;"><span style="top:-2.55em;margin-left:-0.0359em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight">1</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.15em;"><span></span></span></span></span></span></span></span></span></span> and <span class="katex"><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.5806em;vertical-align:-0.15em;"></span><span class="mord"><span class="mord mathnormal" style="margin-right:0.03588em;">v</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.3011em;"><span style="top:-2.55em;margin-left:-0.0359em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight">2</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.15em;"><span></span></span></span></span></span></span></span></span></span> to the first
+cells of the first 3 rows of the gadget.  In this mode the first gate
+coefficient is set to <code>0</code>.</li>
+<li>[Compact mode] With 2 copies, by copying <span class="katex"><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.5806em;vertical-align:-0.15em;"></span><span class="mord"><span class="mord mathnormal" style="margin-right:0.03588em;">v</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.3011em;"><span style="top:-2.55em;margin-left:-0.0359em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight">2</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.15em;"><span></span></span></span></span></span></span></span></span></span> to the first cell of the first
+row and copying <span class="katex"><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.5806em;vertical-align:-0.15em;"></span><span class="mord"><span class="mord mathnormal" style="margin-right:0.03588em;">v</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.3011em;"><span style="top:-2.55em;margin-left:-0.0359em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight"><span class="mord mtight">10</span></span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.15em;"><span></span></span></span></span></span></span><span class="mspace" style="margin-right:0.2778em;"></span><span class="mrel">=</span><span class="mspace" style="margin-right:0.2778em;"></span></span><span class="base"><span class="strut" style="height:0.7333em;vertical-align:-0.15em;"></span><span class="mord"><span class="mord mathnormal" style="margin-right:0.03588em;">v</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.3011em;"><span style="top:-2.55em;margin-left:-0.0359em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight">0</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.15em;"><span></span></span></span></span></span></span><span class="mspace" style="margin-right:0.2222em;"></span><span class="mbin">+</span><span class="mspace" style="margin-right:0.2222em;"></span></span><span class="base"><span class="strut" style="height:0.8491em;"></span><span class="mord"><span class="mord">2</span><span class="msupsub"><span class="vlist-t"><span class="vlist-r"><span class="vlist" style="height:0.8491em;"><span style="top:-3.063em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight"><span class="mord mtight">ℓ</span></span></span></span></span></span></span></span></span><span class="mspace" style="margin-right:0.2222em;"></span><span class="mbin">⋅</span><span class="mspace" style="margin-right:0.2222em;"></span></span><span class="base"><span class="strut" style="height:0.5806em;vertical-align:-0.15em;"></span><span class="mord"><span class="mord mathnormal" style="margin-right:0.03588em;">v</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.3011em;"><span style="top:-2.55em;margin-left:-0.0359em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight">1</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.15em;"><span></span></span></span></span></span></span></span></span></span> to the 2nd cell of row 2.
+In this mode the first gate coefficient is set to <code>1</code>.</li>
+</ul>
+<p>The <code>RangeCheck0</code> gate can also be used on its own to perform 64-bit range checks by
 constraining witness cells 1-2 to zero.</p>
 <p><strong>Byte-order:</strong></p>
 <ul>
@@ -1243,7 +1252,9 @@ by 1 the number of witness cells needed. The idea is to condense the low and mid
 limb of 176 bits (which fits inside our native field) and getting rid of the low carry flag.
 With this idea in mind, the sole carry flag we need is the one located between the middle and the high limbs.</p>
 <h5 id="layout"><a class="header" href="#layout">Layout</a></h5>
-<p>You could lay this out as a double-width gate for chained foreign additions and a final row, e.g.:</p>
+<p>The sign of the operation (whether it is an addition or a subtraction) is stored in the fourth coefficient as
+a value +1 (for addition) or -1 (for subtraction). The first 3 coefficients are the 3 limbs of the foreign modulus.
+One could lay this out as a double-width gate for chained foreign additions and a final row, e.g.:</p>
 <div class="table-wrapper"><table><thead><tr><th>col</th><th><code>ForeignFieldAdd</code></th><th>chain <code>ForeignFieldAdd</code></th><th>final <code>ForeignFieldAdd</code></th><th>final <code>Zero</code></th></tr></thead><tbody>
 <tr><td>0</td><td><code>left_input_lo</code>  (copy)</td><td><code>result_lo</code> (copy)</td><td><code>min_result_lo</code> (copy)</td><td><code>bound_lo</code> (copy)</td></tr>
 <tr><td>1</td><td><code>left_input_mi</code>  (copy)</td><td><code>result_mi</code> (copy)</td><td><code>min_result_mi</code> (copy)</td><td><code>bound_mi</code> (copy)</td></tr>
@@ -1251,9 +1262,9 @@ With this idea in mind, the sole carry flag we need is the one located between t
 <tr><td>3</td><td><code>right_input_lo</code> (copy)</td><td></td><td>0              (check)</td><td> </td></tr>
 <tr><td>4</td><td><code>right_input_mi</code> (copy)</td><td></td><td>0              (check)</td><td></td></tr>
 <tr><td>5</td><td><code>right_input_hi</code> (copy)</td><td></td><td>2^88           (check)</td><td></td></tr>
-<tr><td>6</td><td><code>sign</code>           (copy)</td><td></td><td>1              (check)</td><td></td></tr>
-<tr><td>7</td><td><code>field_overflow</code></td><td></td><td>1              (check)</td><td></td></tr>
-<tr><td>8</td><td><code>carry</code></td><td></td><td><code>bound_carry</code></td><td></td></tr>
+<tr><td>6</td><td><code>field_overflow</code> (copy?)</td><td></td><td>1              (check)</td><td></td></tr>
+<tr><td>7</td><td><code>carry</code></td><td></td><td><code>bound_carry</code></td><td></td></tr>
+<tr><td>8</td><td></td><td></td><td></td><td></td></tr>
 <tr><td>9</td><td></td><td></td><td></td><td></td></tr>
 <tr><td>10</td><td></td><td></td><td></td><td></td></tr>
 <tr><td>11</td><td></td><td></td><td></td><td></td></tr>
@@ -1263,24 +1274,15 @@ With this idea in mind, the sole carry flag we need is the one located between t
 </tbody></table>
 </div>
 <p>We reuse the foreign field addition gate for the final bound check since this is an addition with a
-specific parameter structure. Checking that the correct right input, overflow, and sign are used shall
+specific parameter structure. Checking that the correct right input, overflow, and overflow are used shall
 be done by copy constraining these values with a public input value. One could have a specific gate
 for just this check requiring less constrains, but the cost of adding one more selector gate outweights
 the savings of one row and a few constraints of difference.</p>
 <h5 id="integration"><a class="header" href="#integration">Integration</a></h5>
 <ul>
-<li>Copy signs from public input
+<li>Copy final overflow bit from public input containing value 1
  - Range check the final bound</li>
 </ul>
-<div id="admonition-info-2" class="admonition info">
-<div class="admonition-title">
-<p>Info</p>
-<p><a class="admonition-anchor-link" href="#admonition-info-2"></a></p>
-</div>
-<div>
-<p>TODO: move sign to the coefficient so that the bound check can also check that ovf is one.</p>
-</div>
-</div>
 <h4 id="foreign-field-multiplication"><a class="header" href="#foreign-field-multiplication">Foreign Field Multiplication</a></h4>
 <p>This gadget is used to constrain that</p>
 <pre><code class="language-text">left_input * right_input = quotient * foreign_field_modulus + remainder
@@ -1296,13 +1298,11 @@ variable names used in the code and those of the RFC can be helpful.</p>
 left_input1 =&gt; a1  right_input1 =&gt; b1  quotient1 =&gt; q1  remainder1 =&gt; r1
 left_input2 =&gt; a2  right_input2 =&gt; b2  quotient2 =&gt; q2  remainder2 =&gt; r2
 
-   product1_lo =&gt; p10   product1_hi_0 =&gt; p110   product1_hi_1 =&gt; p111
-     carry0 =&gt; v0        carry1_lo =&gt; v10          carry1_hi =&gt; v11
+   product1_lo =&gt; p10      product1_hi_0 =&gt; p110     product1_hi_1 =&gt; p111
+   carry0 =&gt; v0            carry1_lo =&gt; v10          carry1_hi =&gt; v11
+   quotient_bound0 =&gt; q'0  quotient_bound12 =&gt; q'12
 
-                    scaled_carry1_hi =&gt; scaled_v11
-         quotient_bound0 =&gt; q'0       quotient_bound12 =&gt; q'12
-
-  quotient_bound_carry0 =&gt; q'_carry0 quotient_bound_carry12 = q'_carry12
+                   quotient_bound_carry =&gt; q'_carry01
 </code></pre>
 <h5 id="suffixes"><a class="header" href="#suffixes">Suffixes</a></h5>
 <p>The variable names in this code uses descriptive suffixes to convey information about the
@@ -1331,13 +1331,11 @@ would be split into <code>x1_lo_0</code> and <code>x1_lo_1</code>.</p>
 <li><code>carry0</code> := 2 bit carry</li>
 <li><code>carry1_lo</code> := low 88 bits of <code>carry1</code></li>
 <li><code>carry1_hi</code> := high 3 bits of <code>carry1</code></li>
-<li><code>scaled_carry1_hi</code> : = <code>carry1_hi</code> scaled by 2^9</li>
 <li><code>product1_lo</code> := lowest 88 bits of middle intermediate product</li>
 <li><code>product1_hi_0</code> := lowest 88 bits of middle intermediate product’s highest 88 + 2 bits</li>
 <li><code>product1_hi_1</code> := highest 2 bits of middle intermediate product</li>
 <li><code>quotient_bound</code> := quotient bound for checking <code>q &lt; f</code></li>
-<li><code>quotient_bound_carry01</code> := quotient bound addition 1st carry bit</li>
-<li><code>quotient_bound_carry2</code> := quotient bound addition 2nd carry bit</li>
+<li><code>quotient_bound_carry</code> := quotient bound addition carry bit</li>
 </ul>
 <h5 id="layout-1"><a class="header" href="#layout-1">Layout</a></h5>
 <p>The foreign field multiplication gate’s rows are laid out like this</p>
@@ -1349,14 +1347,14 @@ would be split into <code>x1_lo_0</code> and <code>x1_lo_1</code>.</p>
 <tr><td>4</td><td><code>right_input1</code>        (copy)</td><td><code>quotient_bound2</code>  (copy)</td></tr>
 <tr><td>5</td><td><code>right_input2</code>        (copy)</td><td><code>product1_lo</code>      (copy)</td></tr>
 <tr><td>6</td><td><code>carry1_lo</code>           (copy)</td><td><code>product1_hi_0</code>    (copy)</td></tr>
-<tr><td>7</td><td><code>carry1_hi</code>        (plookup)</td><td><code>product1_hi_1</code></td></tr>
-<tr><td>8</td><td><code>scaled_carry1_hi</code> (plookup)</td><td></td></tr>
-<tr><td>9</td><td><code>carry0</code></td><td></td></tr>
-<tr><td>10</td><td><code>quotient0</code></td><td></td></tr>
-<tr><td>11</td><td><code>quotient1</code></td><td></td></tr>
-<tr><td>12</td><td><code>quotient2</code></td><td></td></tr>
-<tr><td>13</td><td><code>quotient_bound_carry01</code></td><td></td></tr>
-<tr><td>14</td><td><code>quotient_bound_carry2</code></td><td></td></tr>
+<tr><td>7</td><td><code>carry1_hi</code>        (plookup)</td><td></td></tr>
+<tr><td>8</td><td><code>carry0</code></td><td></td></tr>
+<tr><td>9</td><td><code>quotient0</code></td><td></td></tr>
+<tr><td>10</td><td><code>quotient1</code></td><td></td></tr>
+<tr><td>11</td><td><code>quotient2</code></td><td></td></tr>
+<tr><td>12</td><td><code>quotient_bound_carry</code></td><td></td></tr>
+<tr><td>13</td><td><code>product1_hi_1</code></td><td></td></tr>
+<tr><td>14</td><td></td><td></td></tr>
 </tbody></table>
 </div>
 <h4 id="xor"><a class="header" href="#xor">Xor</a></h4>
@@ -1402,10 +1400,10 @@ to obtain a gadget for 64-bit words XOR:</p>
 <tr><td>3</td><td><code>Xor16</code></td><td>Xor 2 most significant bytes of the words</td></tr>
 <tr><td>4</td><td><code>Zero</code></td><td>Zero values, can be reused as generic gate</td></tr>
 </tbody></table>
-</div><div id="admonition-info-3" class="admonition info">
+</div><div id="admonition-info-2" class="admonition info">
 <div class="admonition-title">
 <p>Info</p>
-<p><a class="admonition-anchor-link" href="#admonition-info-3"></a></p>
+<p><a class="admonition-anchor-link" href="#admonition-info-2"></a></p>
 </div>
 <div>
 <p>We could halve the number of rows of the 64-bit XOR gadget by having lookups
